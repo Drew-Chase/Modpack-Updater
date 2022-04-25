@@ -1,4 +1,4 @@
-package com.drewchaseproject.mc.modpack_updater.Utils;
+package com.drewchaseproject.mc.modpack_updater.Handlers;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

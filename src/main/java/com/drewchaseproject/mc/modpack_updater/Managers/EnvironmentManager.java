@@ -4,8 +4,8 @@ import java.net.URL;
 import java.nio.file.Path;
 
 import com.drewchaseproject.mc.modpack_updater.App;
-import com.drewchaseproject.mc.modpack_updater.Utils.GitHandler;
-import com.drewchaseproject.mc.modpack_updater.Utils.NetworkUtil;
+import com.drewchaseproject.mc.modpack_updater.Handlers.GitHandler;
+import com.drewchaseproject.mc.modpack_updater.Handlers.NetworkHandler;
 import com.google.gson.JsonObject;
 
 public class EnvironmentManager {
@@ -28,7 +28,7 @@ public class EnvironmentManager {
                 Path file = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp", side.toString() + ".zip");
                 App.GetInstance().config.SetVersion(json.get("tag_name").getAsString());
                 App.log.debug(String.format("Version %s", App.GetInstance().config.GetVersion()));
-                return NetworkUtil.DownloadFile(url, file);
+                return NetworkHandler.DownloadFile(url, file);
             }
         }
         App.log.debug("No update found!");

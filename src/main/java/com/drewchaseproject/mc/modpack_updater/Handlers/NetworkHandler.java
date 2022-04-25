@@ -1,4 +1,4 @@
-package com.drewchaseproject.mc.modpack_updater.Utils;
+package com.drewchaseproject.mc.modpack_updater.Handlers;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.Map;
 import com.drewchaseproject.mc.modpack_updater.App;
 import com.drewchaseproject.mc.modpack_updater.Objects.HttpConnection;
 
-public class NetworkUtil {
+public class NetworkHandler {
     public static boolean DownloadFile(URL url, Path file) {
         App.log.info("Downloading Update...");
         File f = file.toFile();
