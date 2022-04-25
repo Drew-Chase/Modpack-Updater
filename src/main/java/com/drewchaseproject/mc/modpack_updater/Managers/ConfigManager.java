@@ -14,14 +14,36 @@ import com.google.gson.JsonParser;
 
 public class ConfigManager {
 
-    String version = "0.0.0";
-    String Username;
-    String Repository;
-    String Token;
-    Path file;
+    private String version = "0.0.0";
+    private String Username = "";
+    private String Repository = "";
+    private String Token = "";
+    private Path file;
 
     public ConfigManager() {
         file = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "config.json");
+        Read();
+    }
+
+    public void SetVersion(String version) {
+        this.version = version;
+        Write();
+    }
+
+    public String GetVersion() {
+        return version;
+    }
+
+    public String GetUsername() {
+        return Username;
+    }
+
+    public String GetRepository() {
+        return Repository;
+    }
+
+    public String GetToken() {
+        return Token;
     }
 
     public void Write() {
@@ -29,9 +51,9 @@ public class ConfigManager {
             StringBuilder builder = new StringBuilder();
             // @formatter:off
             builder.append("{")
-            .append(String.format("\"version\": \"%s\"", version))
-            .append(String.format("\"username\": \"%s\"", Username))
-            .append(String.format("\"repository\": \"%s\"", Repository))
+            .append(String.format("\"version\": \"%s\",", version))
+            .append(String.format("\"username\": \"%s\",", Username))
+            .append(String.format("\"repository\": \"%s\",", Repository))
             .append(String.format("\"token\": \"%s\"", Token))
             .append("}");
             // @formatter:on
@@ -58,6 +80,15 @@ public class ConfigManager {
                 if (obj.get("version") != null) {
                     version = obj.get("version").getAsString();
                 }
+                if (obj.get("username") != null) {
+                    Username = obj.get("username").getAsString();
+                }
+                if (obj.get("repository") != null) {
+                    Repository = obj.get("repository").getAsString();
+                }
+                if (obj.get("token") != null) {
+                    Token = obj.get("token").getAsString();
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -72,6 +103,8 @@ public class ConfigManager {
                 }
             }
 
+        } else {
+            Write();
         }
     }
 
