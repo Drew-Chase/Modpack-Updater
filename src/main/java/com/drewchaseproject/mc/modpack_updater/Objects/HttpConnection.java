@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class HttpConnection {
-    String Content;
-    Map<String, List<String>> Headers;
-    HttpURLConnection connection;
+    private String Content = "";
+    private Map<String, List<String>> Headers = new HashMap<>();
+    private HttpURLConnection connection;
 
     public HttpConnection(HttpURLConnection connection) {
         this.connection = connection;
@@ -25,8 +26,8 @@ public class HttpConnection {
         return Headers;
     }
 
-    public String[] GetHeader(String key){
-        return (String[])Headers.get(key).toArray();
+    public String[] GetHeader(String key) {
+        return (String[]) Headers.get(key).toArray();
     }
 
     public String GetContent() {
@@ -50,7 +51,7 @@ public class HttpConnection {
         return Content;
     }
 
-    public void Close(){
+    public void Close() {
         connection.disconnect();
     }
 
