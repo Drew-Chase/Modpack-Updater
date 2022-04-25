@@ -9,10 +9,12 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.Map;
 
+import com.drewchaseproject.mc.modpack_updater.App;
 import com.drewchaseproject.mc.modpack_updater.Objects.HttpConnection;
 
 public class NetworkUtil {
     public static boolean DownloadFile(URL url, Path file) {
+        App.log.info("Downloading Update...");
         File f = file.toFile();
         f.getParentFile().mkdirs();
         try (BufferedInputStream in = new BufferedInputStream(url.openStream())) {
@@ -32,6 +34,7 @@ public class NetworkUtil {
     }
 
     public static HttpConnection MakeConnection(URL url, Map<String, String> headers) {
+        App.log.debug(String.format("Attempting Connection to \"%s\"", url.toString()));
         try {
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestProperty("User-Agent", "Minecraft Modpack Updater");
