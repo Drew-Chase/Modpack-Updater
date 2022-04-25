@@ -31,3 +31,6 @@ bin/
 # fabric
 
 run/
+modpack_updater/config.json
+modpack_updater/temp
+logs/
