@@ -12,8 +12,11 @@ import java.util.Date;
 
 import com.drewchaseproject.mc.modpack_updater.App;
 import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
+import com.drewchaseproject.mc.modpack_updater.Handlers.JsonHandler;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import net.minecraft.util.JsonHelper;
 
 public class ConfigManager {
 
@@ -62,39 +65,16 @@ public class ConfigManager {
 
     public void Read() {
         if (file.toFile().exists()) {
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(file.toFile()));
-                String line;
-                line = reader.readLine();
-                StringBuilder builder = new StringBuilder();
-                while (line != null) {
-                    builder.append(line).append("\n");
-                    line = reader.readLine();
+            JsonObject obj = (JsonObject) JsonHandler.ParseJsonFromFile(file);
+            if (obj.get("releaseDate") != null) {
+                try {
+                    releaseDate = CurseHandler.DateFormat.parse(obj.get("releaseDate").getAsString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                JsonObject obj = (JsonObject) JsonParser.parseString(builder.toString());
-                if (obj.get("releaseDate") != null) {
-                    try {
-                        releaseDate = CurseHandler.DateFormat.parse(obj.get("releaseDate").getAsString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (obj.get("ID") != null) {
-                    projectID = obj.get("ID").getAsString();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            }
+            if (obj.get("ID") != null) {
+                projectID = obj.get("ID").getAsString();
             }
 
         } else {
