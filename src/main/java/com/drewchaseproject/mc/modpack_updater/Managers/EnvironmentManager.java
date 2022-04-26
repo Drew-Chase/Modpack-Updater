@@ -4,7 +4,8 @@ import java.net.URL;
 import java.nio.file.Path;
 
 import com.drewchaseproject.mc.modpack_updater.App;
-import com.drewchaseproject.mc.modpack_updater.Handlers.GitHandler;
+import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
+import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 import com.drewchaseproject.mc.modpack_updater.Handlers.NetworkHandler;
 import com.google.gson.JsonObject;
 
@@ -20,16 +21,16 @@ public class EnvironmentManager {
 
     public static boolean TryUpdate(Environment side, boolean force) {
         App.log.debug("Attempting to Update!");
-        if (force || GitHandler.CheckForUpdate()) {
+        if (force || CurseHandler.CheckForUpdate()) {
             App.log.info("Update found!");
-            JsonObject json = GitHandler.GetConnectionAsJson();
-            if (json != null) {
-                URL url = side == Environment.CLIENT ? GitHandler.GetClientArchiveURL(json) : GitHandler.GetServerArchiveURL(json);
-                Path file = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp", side.toString() + ".zip");
-                App.GetInstance().config.SetVersion(json.get("tag_name").getAsString());
-                App.log.debug(String.format("Version %s", App.GetInstance().config.GetVersion()));
-                return NetworkHandler.DownloadFile(url, file);
-            }
+            // JsonObject json = CurseHandler.GetConnectionAsJson();
+            // if (json != null) {
+            //     URL url = side == Environment.CLIENT ? CurseHandler.GetClientArchiveURL(json) : CurseHandler.GetServerArchiveURL(json);
+            //     Path file = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp", side.toString() + ".zip");
+            //     App.GetInstance().config.SetVersion(json.get("tag_name").getAsString());
+            //     App.log.debug(String.format("Version %s", App.GetInstance().config.GetVersion()));
+            //     return NetworkHandler.DownloadFile(url, file);
+            // }
         }
         App.log.debug("No update found!");
         return false;
