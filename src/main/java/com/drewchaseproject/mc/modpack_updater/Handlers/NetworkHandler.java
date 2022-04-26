@@ -14,7 +14,7 @@ import com.drewchaseproject.mc.modpack_updater.Objects.HttpConnection;
 
 public class NetworkHandler {
     public static boolean DownloadFile(URL url, Path file) {
-        App.log.info("Downloading Update...");
+        App.log.debug(String.format("Downloading \"%s\" to \"%s\"", url.toString(), file.toAbsolutePath().toString()));
         File f = file.toFile();
         f.getParentFile().mkdirs();
         try (BufferedInputStream in = new BufferedInputStream(url.openStream())) {
