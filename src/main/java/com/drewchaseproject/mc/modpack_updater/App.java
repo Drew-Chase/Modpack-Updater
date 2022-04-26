@@ -2,14 +2,15 @@ package com.drewchaseproject.mc.modpack_updater;
 
 import java.nio.file.Path;
 
-import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 import com.drewchaseproject.mc.modpack_updater.Managers.ConfigManager;
 import com.drewchaseproject.mc.modpack_updater.Managers.EnvironmentManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class App {
     private static App _instance;
+
     public ConfigManager config;
     public Path WorkingDirectory;
 
@@ -17,14 +18,12 @@ public class App {
 
     private App() {
         _instance = this;
-        WorkingDirectory = Path.of("modpack_updater");
+        WorkingDirectory = Path.of("../config/modpack_updater");
         WorkingDirectory.toFile().mkdirs();
         config = new ConfigManager();
-        if (!config.GetProjectID().isBlank()){
-            CurseHandler.GetLatestPackVersionAsJson();
-            // EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
-        }
-        else
+        if (!config.GetProjectID().isBlank()) {
+            EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
+        } else
             log.error("Project ID cannot be blank!");
     }
 
@@ -37,4 +36,5 @@ public class App {
             return new App();
         return _instance;
     }
+
 }
