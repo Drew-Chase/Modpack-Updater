@@ -2,6 +2,7 @@ package com.drewchaseproject.mc.modpack_updater;
 
 import java.nio.file.Path;
 
+import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 import com.drewchaseproject.mc.modpack_updater.Managers.ConfigManager;
 import com.drewchaseproject.mc.modpack_updater.Managers.EnvironmentManager;
 import org.slf4j.Logger;
@@ -19,14 +20,12 @@ public class App {
         WorkingDirectory = Path.of("modpack_updater");
         WorkingDirectory.toFile().mkdirs();
         config = new ConfigManager();
-        if (!(config.GetUsername().isBlank() || config.GetRepository().isBlank() || config.GetToken().isBlank()))
-            EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
-        else if (config.GetUsername().isBlank())
-            log.error("Username cannot be blank!");
-        else if (config.GetRepository().isBlank())
-            log.error("Repository cannot be blank!");
-        else if (config.GetToken().isBlank())
-            log.error("Token cannot be blank!");
+        if (!config.GetProjectID().isBlank()){
+            CurseHandler.GetLatestPackVersionAsJson();
+            // EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
+        }
+        else
+            log.error("Project ID cannot be blank!");
     }
 
     public static void main(String[] args) {
