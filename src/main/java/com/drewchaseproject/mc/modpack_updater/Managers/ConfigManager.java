@@ -7,17 +7,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.util.Date;
 
 import com.drewchaseproject.mc.modpack_updater.App;
+import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class ConfigManager {
 
-    private String version = "0.0.0";
-    private String Username = "";
-    private String Repository = "";
-    private String Token = "";
+    private Date releaseDate = null;
+    private String projectID = "";
     private Path file;
 
     public ConfigManager() {
@@ -25,25 +26,22 @@ public class ConfigManager {
         Read();
     }
 
-    public void SetVersion(String version) {
-        this.version = version;
+    public void SetReleaseDate(Date release) {
+        this.releaseDate = release;
         Write();
     }
 
-    public String GetVersion() {
-        return version;
+    public Date GetReleaseDate() {
+        return releaseDate;
     }
 
-    public String GetUsername() {
-        return Username;
+    public void SetProjectID(String id) {
+        this.projectID = id;
+        Write();
     }
 
-    public String GetRepository() {
-        return Repository;
-    }
-
-    public String GetToken() {
-        return Token;
+    public String GetProjectID() {
+        return projectID;
     }
 
     public void Write() {
@@ -51,10 +49,8 @@ public class ConfigManager {
             StringBuilder builder = new StringBuilder();
             // @formatter:off
             builder.append("{")
-            .append(String.format("\"version\": \"%s\",", version))
-            .append(String.format("\"username\": \"%s\",", Username))
-            .append(String.format("\"repository\": \"%s\",", Repository))
-            .append(String.format("\"token\": \"%s\"", Token))
+            .append(String.format("\"ID\": \"%s\",", projectID))
+            .append(String.format("\"releaseDate\": \"%s\"", CurseHandler.DateFormat.format(releaseDate)))
             .append("}");
             // @formatter:on
             writer.write(builder.toString());
@@ -77,17 +73,15 @@ public class ConfigManager {
                     line = reader.readLine();
                 }
                 JsonObject obj = (JsonObject) JsonParser.parseString(builder.toString());
-                if (obj.get("version") != null) {
-                    version = obj.get("version").getAsString();
+                if (obj.get("releaseDate") != null) {
+                    try {
+                        releaseDate = CurseHandler.DateFormat.parse(obj.get("releaseDate").getAsString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
-                if (obj.get("username") != null) {
-                    Username = obj.get("username").getAsString();
-                }
-                if (obj.get("repository") != null) {
-                    Repository = obj.get("repository").getAsString();
-                }
-                if (obj.get("token") != null) {
-                    Token = obj.get("token").getAsString();
+                if (obj.get("ID") != null) {
+                    projectID = obj.get("ID").getAsString();
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
