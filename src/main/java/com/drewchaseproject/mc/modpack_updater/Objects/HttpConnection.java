@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class HttpConnection {
     private String Content = "";
     private Map<String, List<String>> Headers = new HashMap<>();
@@ -49,6 +52,10 @@ public class HttpConnection {
             }
         }
         return Content;
+    }
+
+    public JsonObject GetContentAsJson(){
+        return JsonParser.parseString(GetContent()).getAsJsonObject();
     }
 
     public void Close() {
