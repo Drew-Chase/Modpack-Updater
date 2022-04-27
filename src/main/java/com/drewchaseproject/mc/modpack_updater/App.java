@@ -33,15 +33,15 @@ public class App {
             log.error("Project ID cannot be blank!");
     }
 
-    private Thread AttemptUpdateAsync() {
-        Runnable runnable = () -> {
-            if (config.GetProjectID() != -1) {
-                EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
-            } else
-                log.error("Project ID cannot be blank!");
-        };
-        return new Thread(runnable);
-    }
+    // private Thread AttemptUpdateAsync() {
+    //     Runnable runnable = () -> {
+    //         if (config.GetProjectID() != -1) {
+    //             EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
+    //         } else
+    //             log.error("Project ID cannot be blank!");
+    //     };
+    //     return new Thread(runnable);
+    // }
 
     public static void main(String[] args) {
         GetInstance();

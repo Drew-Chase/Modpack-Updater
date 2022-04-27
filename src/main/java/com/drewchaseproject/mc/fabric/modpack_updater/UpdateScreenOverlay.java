@@ -2,7 +2,6 @@ package com.drewchaseproject.mc.fabric.modpack_updater;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.function.IntSupplier;
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -21,7 +20,6 @@ import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
@@ -47,12 +45,9 @@ public class UpdateScreenOverlay extends Overlay {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         float h;
         int k;
-        float g;
         int i = this.client.getWindow().getScaledWidth();
         int j = this.client.getWindow().getScaledHeight();
-        long l = Util.getMeasuringTimeMs();
         float f = -1.0f;
-        float f2 = -1.0f;
         if (f >= 1.0f) {
             if (this.client.currentScreen != null) {
                 this.client.currentScreen.render(matrices, 0, 0, delta);
@@ -85,7 +80,6 @@ public class UpdateScreenOverlay extends Overlay {
         UpdateScreenOverlay.drawTexture(matrices, k, p - q, r, (int) d, 0.0625f, 60.0f, 120, 60, 120, 120);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
-        int s = (int) ((double) this.client.getWindow().getScaledHeight() * 0.8325);
         this.progress = MathHelper.clamp(this.progress * 0.95f + 0 * 0.050000012f, 0.0f, 1.0f);
         if (f < 1.0f) {
         }

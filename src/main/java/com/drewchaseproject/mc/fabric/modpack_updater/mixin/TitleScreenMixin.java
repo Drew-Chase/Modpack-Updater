@@ -1,6 +1,5 @@
 package com.drewchaseproject.mc.fabric.modpack_updater.mixin;
 
-import com.drewchaseproject.mc.fabric.modpack_updater.UpdateScreenOverlay;
 import com.drewchaseproject.mc.modpack_updater.App;
 import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 
