@@ -56,6 +56,20 @@ public class CurseHandler {
         return mods;
     }
 
+    public static List<Mod> CheckForRemovedMods(List<Mod> NewMods, List<Mod> OldMods) {
+        List<Mod> removed = new ArrayList<>();
+        for (Mod oldMod : OldMods) {
+            boolean found = false;
+            for (Mod newMod : NewMods) {
+                if (oldMod.GetProjectID() == newMod.GetProjectID())
+                    found = true;
+            }
+            if (!found)
+                removed.add(oldMod);
+        }
+        return removed;
+    }
+
     public static JsonObject GetLatestPackVersionAsJson() {
         Date latestDate = null;
         JsonObject latestVersion = null;
