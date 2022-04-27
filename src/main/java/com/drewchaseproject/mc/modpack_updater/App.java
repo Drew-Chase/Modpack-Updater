@@ -13,18 +13,34 @@ public class App {
 
     public ConfigManager config;
     public Path WorkingDirectory;
+    public static final String MOD_ID = "modpack_updater";
 
-    public static final Logger log = LoggerFactory.getLogger("modpack_updater");
+    public static final Logger log = LoggerFactory.getLogger(MOD_ID);
 
     private App() {
         _instance = this;
-        WorkingDirectory = Path.of("../config/modpack_updater");
+        WorkingDirectory = Path.of("config/modpack_updater");
         WorkingDirectory.toFile().mkdirs();
         config = new ConfigManager();
-        if (!config.GetProjectID().isBlank()) {
+        EnvironmentManager.CleanUp();
+    }
+
+    public synchronized void AttemptUpdate() {
+        EnvironmentManager.CleanUp();
+        if (config.GetProjectID() != -1) {
             EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
         } else
             log.error("Project ID cannot be blank!");
+    }
+
+    private Thread AttemptUpdateAsync() {
+        Runnable runnable = () -> {
+            if (config.GetProjectID() != -1) {
+                EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
+            } else
+                log.error("Project ID cannot be blank!");
+        };
+        return new Thread(runnable);
     }
 
     public static void main(String[] args) {
