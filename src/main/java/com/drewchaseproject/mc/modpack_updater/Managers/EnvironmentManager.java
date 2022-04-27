@@ -9,7 +9,6 @@ import com.drewchaseproject.mc.modpack_updater.App;
 import com.drewchaseproject.mc.modpack_updater.Handlers.ArchiveHandler;
 import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 import com.drewchaseproject.mc.modpack_updater.Handlers.IOHandler;
-import com.drewchaseproject.mc.modpack_updater.Handlers.MinecraftHandler;
 import com.drewchaseproject.mc.modpack_updater.Objects.Mod;
 import com.google.common.io.Files;
 
@@ -34,19 +33,23 @@ public class EnvironmentManager {
                 ArchiveHandler.UnzipArchive(archive, content);
                 Path manifest = Path.of(content.toString(), "manifest.json");
                 if (manifest.toFile().exists()) {
-                    List<Mod> mods = CurseHandler.GetModListFromManifest(manifest);
-                    List<String> installedMods = MinecraftHandler.InstalledMods();
-                    for (Mod mod : mods) {
-                        if (!installedMods.contains(mod.GetFileName())) {
-                            mod.Download();
-                            for (Mod m : ModManager.GetInstance().GetMods()) {
-                                if (mod.GetProjectID() == m.GetProjectID() && mod.GetFileID() != m.GetFileID()) {
-                                    ModManager.GetInstance().AddModToBeRemoved(m);
-                                    App.log.info("Adding Updated version of " + m.GetFileName());
-                                }
+                    List<Mod> newMods = CurseHandler.GetModListFromManifest(manifest);
+                    for (Mod newMod : newMods) {
+                        if (!ModManager.GetInstance().GetMods().contains(newMod)) {
+                            newMod.Download();
+                        }
+                        for (Mod oldMods : ModManager.GetInstance().GetMods()) {
+                            if ((newMod.GetProjectID() == oldMods.GetProjectID() && newMod.GetFileID() != oldMods.GetFileID())) {
+                                newMod.Download();
+                                ModManager.GetInstance().AddModToBeRemoved(oldMods);
+                                App.log.info("Adding Updated version of " + oldMods.GetFileName());
                             }
                         }
                     }
+                    for (Mod removed : CurseHandler.CheckForRemovedMods(newMods, ModManager.GetInstance().GetMods())) {
+                        ModManager.GetInstance().AddModToBeRemoved(removed);
+                    }
+                    InstallUpdate();
                     return true;
                 } else {
                     App.log.info("Manifest NOT Found!");
@@ -56,6 +59,7 @@ public class EnvironmentManager {
         } else
             App.log.info("No update found!");
         return false;
+
     }
 
     public static void InstallUpdate() {
@@ -64,7 +68,7 @@ public class EnvironmentManager {
         if (toInstall.toFile().isDirectory()) {
             for (File file : toInstall.toFile().listFiles()) {
                 try {
-                    Files.move(file, Path.of(".", file.getName()).toFile());
+                    Files.move(file, Path.of("./mods", file.getName()).toFile());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -82,8 +86,8 @@ public class EnvironmentManager {
                 ModManager.GetInstance().Add(mod);
             }
 
-            CleanUp();
         }
+        CleanUp();
     }
 
     public static void CleanUp() {
