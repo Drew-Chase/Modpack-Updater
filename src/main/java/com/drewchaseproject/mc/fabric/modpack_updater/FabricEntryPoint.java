@@ -7,4 +7,5 @@ public class FabricEntryPoint implements ModInitializer {
 	@Override
 	public void onInitialize() {
 	}
+
 }
