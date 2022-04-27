@@ -1,0 +1,6 @@
+{
+    "title.modpack_updater.config": "Modpack Updater Config",
+    "option.modpack_updater.projectID": "ProjectID",
+    "option.modpack_updater.projectID.tooltip": "Modpack Curse ProjectID",
+    "menu.modpack_updater.check-for-updates": "Modpack Curse ProjectID"
+}
