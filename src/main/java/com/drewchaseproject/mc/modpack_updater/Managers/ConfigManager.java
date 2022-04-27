@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 public class ConfigManager {
 
     private Date releaseDate = new Date(0);
-    private String projectID = "";
+    private int projectID = -1;
     private Path file;
 
     public ConfigManager() {
@@ -29,12 +29,12 @@ public class ConfigManager {
         return releaseDate;
     }
 
-    public void SetProjectID(String id) {
+    public void SetProjectID(int id) {
         this.projectID = id;
         Write();
     }
 
-    public String GetProjectID() {
+    public int GetProjectID() {
         return projectID;
     }
 
@@ -56,7 +56,7 @@ public class ConfigManager {
                 }
             }
             if (obj.get("ID") != null) {
-                projectID = obj.get("ID").getAsString();
+                projectID = obj.get("ID").getAsInt();
             }
 
         } else {
