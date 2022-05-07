@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import com.drewchaseproject.mc.modpack_updater.App;
+import com.drewchaseproject.mc.modpack_updater.App.LogType;
 import com.drewchaseproject.mc.modpack_updater.Handlers.ArchiveHandler;
 import com.drewchaseproject.mc.modpack_updater.Handlers.CurseHandler;
 import com.drewchaseproject.mc.modpack_updater.Handlers.IOHandler;
@@ -23,11 +24,10 @@ public class EnvironmentManager {
     }
 
     public static boolean TryUpdate(Environment side, boolean force) {
-        App.log.debug("Attempting to Update!");
+        App.GetInstance().Log("Attempting to Update!", LogType.info);
         if (force || CurseHandler.CheckForUpdate()) {
             try {
-
-                App.log.info("Update found!");
+                App.GetInstance().Log("Downloading Update!", LogType.info);
                 Path archive = CurseHandler.DownloadUpdateArchive();
                 Path content = Path.of(archive.getParent().toString(), "output");
                 ArchiveHandler.UnzipArchive(archive, content);
@@ -42,7 +42,7 @@ public class EnvironmentManager {
                             if ((newMod.GetProjectID() == oldMods.GetProjectID() && newMod.GetFileID() != oldMods.GetFileID())) {
                                 newMod.Download();
                                 ModManager.GetInstance().AddModToBeRemoved(oldMods);
-                                App.log.info("Adding Updated version of " + oldMods.GetFileName());
+                                App.GetInstance().Log("Adding Updated version of " + oldMods.GetFileName());
                             }
                         }
                     }
@@ -52,18 +52,19 @@ public class EnvironmentManager {
                     InstallUpdate();
                     return true;
                 } else {
-                    App.log.info("Manifest NOT Found!");
+                    App.GetInstance().Log("Manifest NOT Found!", LogType.error);
                 }
             } catch (Exception e) {
+                App.GetInstance().Log(e.getMessage(), LogType.error);
             }
         } else
-            App.log.info("No update found!");
+            App.GetInstance().Log("No update found!", LogType.warn);
         return false;
 
     }
 
     public static void InstallUpdate() {
-        App.log.info("Installing Update...");
+        App.GetInstance().Log("Installing Update...", LogType.info);
         Path toInstall = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp", "toIntall");
         if (toInstall.toFile().isDirectory()) {
             for (File file : toInstall.toFile().listFiles()) {
@@ -88,9 +89,11 @@ public class EnvironmentManager {
 
         }
         CleanUp();
+        App.GetInstance().Log("Restart Minecraft!", LogType.info);
     }
 
     public static void CleanUp() {
+        App.GetInstance().Log("Cleaning Temp Files...", LogType.warn);
         IOHandler.DeleteDirectory(Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp").toFile());
     }
 }
