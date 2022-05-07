@@ -2,5 +2,9 @@
     "title.modpack_updater.config": "Modpack Updater Config",
     "option.modpack_updater.projectID": "ProjectID",
     "option.modpack_updater.projectID.tooltip": "Modpack Curse ProjectID",
-    "menu.modpack_updater.check-for-updates": "Modpack Curse ProjectID"
+    "menu.modpack_updater.check-for-updates": "Modpack Curse ProjectID",
+    "updater.option.checkforupdate": "Check For Updates",
+    "updater.option.noupdate": "No Update",
+    "updater.title.updater": "Modpack Updater",
+    "updater.option.updatenow": "Update!"
 }
