@@ -3,6 +3,7 @@ This will allow you to update the modpack automatically
 
 # Screenshots
 ## Title Screen
-![Title Screenshot](https://user-images.githubusercontent.com/5598099/165417922-bbc7c423-7333-4db4-a6b5-dc439fa1f5e8.png)
+![Title Screenshot](https://user-images.githubusercontent.com/5598099/167264679-5b849115-4242-4315-b6c9-20b377a03cd0.png)
+
 ## Config
 ![Config Screenshot](https://user-images.githubusercontent.com/5598099/167264660-8924c74a-04e0-4cd8-ab0b-45b8e6ccc405.png)
