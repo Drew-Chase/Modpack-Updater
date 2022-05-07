@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.drewchaseproject.mc.modpack_updater.App;
+import com.drewchaseproject.mc.modpack_updater.App.LogType;
 import com.drewchaseproject.mc.modpack_updater.Managers.ModManager;
 import com.drewchaseproject.mc.modpack_updater.Objects.HttpConnection;
 import com.drewchaseproject.mc.modpack_updater.Objects.Mod;
@@ -25,9 +26,10 @@ public class CurseHandler {
     public static SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
 
     public static boolean CheckForUpdate() {
-        App.log.info("Checking for Updates!");
         JsonObject json = CurseHandler.GetLatestPackVersionAsJson();
-        return json == null || ModManager.GetInstance().IsEmpty() || App.GetInstance().config.GetReleaseDate() == null || ParseFileDate(json.get("fileDate").getAsString()).after(App.GetInstance().config.GetReleaseDate());
+        if (json == null)
+            return false;
+        return ModManager.GetInstance().IsEmpty() || App.GetInstance().config.GetReleaseDate() == null || ParseFileDate(json.get("fileDate").getAsString()).after(App.GetInstance().config.GetReleaseDate());
     }
 
     public static Path DownloadUpdateArchive() {
@@ -73,7 +75,10 @@ public class CurseHandler {
     public static JsonObject GetLatestPackVersionAsJson() {
         Date latestDate = null;
         JsonObject latestVersion = null;
-        for (JsonElement element : GetPackAsJson()) {
+        JsonArray array = GetPackAsJson();
+        if (array == null)
+            return null;
+        for (JsonElement element : array) {
             Date date = ParseFileDate(element.getAsJsonObject().get("fileDate").getAsString());
             if (latestDate == null || date.after(latestDate)) {
                 latestDate = date;
@@ -96,10 +101,16 @@ public class CurseHandler {
         try {
             URL url = new URL(String.format("https://addons-ecs.forgesvc.net/api/v2/addon/%s/files", App.GetInstance().config.GetProjectID()));
             HttpConnection connection = new HttpConnection((HttpURLConnection) url.openConnection());
-            JsonArray obj = (JsonArray) JsonParser.parseString(connection.GetContent());
-            connection.Close();
-            return obj;
+            if (connection.IsSuccess()) {
+
+                JsonArray obj = (JsonArray) JsonParser.parseString(connection.GetContent());
+                connection.Close();
+                return obj;
+            } else {
+                App.GetInstance().Log("Unable to get pack information... Check Project ID...", LogType.error);
+            }
         } catch (IOException e) {
+            App.GetInstance().Log(e.getMessage(), LogType.error);
         }
 
         return null;
