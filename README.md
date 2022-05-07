@@ -5,4 +5,4 @@ This will allow you to update the modpack automatically
 ## Title Screen
 ![Title Screenshot](https://user-images.githubusercontent.com/5598099/165417922-bbc7c423-7333-4db4-a6b5-dc439fa1f5e8.png)
 ## Config
-![Config Screenshot](https://user-images.githubusercontent.com/5598099/165418024-b64d83ca-ad63-47c9-a70b-05911a407d37.png)
+![Config Screenshot](https://user-images.githubusercontent.com/5598099/167264660-8924c74a-04e0-4cd8-ab0b-45b8e6ccc405.png)
