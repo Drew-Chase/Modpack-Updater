@@ -33,6 +33,15 @@ public class HttpConnection {
         return (String[]) Headers.get(key).toArray();
     }
 
+    public boolean IsSuccess() {
+        try {
+            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public String GetContent() {
         if (Content.isEmpty()) {
             InputStreamReader reader;
@@ -54,7 +63,7 @@ public class HttpConnection {
         return Content;
     }
 
-    public JsonObject GetContentAsJson(){
+    public JsonObject GetContentAsJson() {
         return JsonParser.parseString(GetContent()).getAsJsonObject();
     }
 
