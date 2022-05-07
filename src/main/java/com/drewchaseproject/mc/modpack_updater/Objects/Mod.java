@@ -54,7 +54,7 @@ public class Mod {
     }
 
     public boolean Download() {
-        App.log.info(String.format("Downloading \"%s\"", FileName));
+        App.GetInstance().Log(String.format("Downloading \"%s\"", FileName));
         Path outputDirectory = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp", "toIntall");
         outputDirectory.toFile().mkdirs();
         return NetworkHandler.DownloadFile(DownloadURL, Path.of(outputDirectory.toAbsolutePath().toString(), FileName));
