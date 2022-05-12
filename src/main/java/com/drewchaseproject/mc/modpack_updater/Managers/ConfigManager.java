@@ -14,37 +14,89 @@ public class ConfigManager {
     private Date releaseDate = new Date(0);
     private int projectID = -1;
     private Path file;
+    private boolean needsUpdate = false;
 
     public ConfigManager() {
         file = Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "config.json");
         Read();
     }
 
-    public void SetReleaseDate(Date release) {
+    // Getters
+    /**
+     * Gets the Release Date of the installed Mod Pack
+     * 
+     * @return release date
+     */
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    /**
+     * Gets the Project ID of the Mod Pack
+     * 
+     * @return project id
+     */
+    public int getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * Returns if the pack currently requires an update
+     * 
+     * @return if an update is available
+     */
+    public boolean getNeedsUpdate() {
+        return needsUpdate;
+    }
+
+    // Setters
+    /**
+     * Sets the release date of the mod pack and writes to file. <br>
+     * SEE: {@link ConfigManager#Write()}
+     * 
+     * @param release
+     */
+    public void setReleaseDate(Date release) {
         this.releaseDate = release;
         Write();
     }
 
-    public Date GetReleaseDate() {
-        return releaseDate;
+    /**
+     * Sets if the mod pack needs an update and writes to file. <br>
+     * SEE: {@link ConfigManager#Write()}
+     * 
+     * @param value
+     */
+    public void setNeedsUpdate(boolean value) {
+        needsUpdate = value;
+        Write();
     }
 
-    public void SetProjectID(int id) {
+    /**
+     * Sets the project id of the mod pack and writes to file. <br>
+     * SEE: {@link ConfigManager#Write()}
+     * 
+     * @param release
+     */
+    public void setProjectID(int id) {
         this.projectID = id;
         Write();
     }
 
-    public int GetProjectID() {
-        return projectID;
-    }
-
+    /**
+     * Writes all values to json file
+     */
     public void Write() {
         JsonObject json = new JsonObject();
         json.addProperty("ID", projectID);
         json.addProperty("releaseDate", CurseHandler.DateFormat.format(releaseDate));
+        json.addProperty("needsUpdate", needsUpdate);
         JsonHandler.WriteJsonToFile(json, file.toFile());
     }
 
+    /**
+     * Reads values from json file.
+     */
     public void Read() {
         if (file.toFile().exists()) {
             JsonObject obj = (JsonObject) JsonHandler.ParseJsonFromFile(file.toFile());
@@ -57,6 +109,13 @@ public class ConfigManager {
             }
             if (obj.get("ID") != null) {
                 projectID = obj.get("ID").getAsInt();
+            } else {
+                setProjectID(projectID);
+            }
+            if (obj.get("needsUpdate") != null) {
+                needsUpdate = obj.get("needsUpdate").getAsBoolean();
+            } else {
+                setNeedsUpdate(needsUpdate);
             }
 
         } else {
