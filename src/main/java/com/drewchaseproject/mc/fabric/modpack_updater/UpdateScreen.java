@@ -1,8 +1,5 @@
 package com.drewchaseproject.mc.fabric.modpack_updater;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.drewchaseproject.mc.fabric.modpack_updater.widget.LogListWidget;
 import com.drewchaseproject.mc.modpack_updater.App;
 import com.drewchaseproject.mc.modpack_updater.App.LogType;
@@ -39,12 +36,12 @@ public class UpdateScreen extends Screen {
 		logListWidget = new LogListWidget(client, this);
 		this.addDrawableChild(logListWidget);
 		TextFieldWidget projectIDField = new TextFieldWidget(this.textRenderer, this.width - buttonWidth - 5, 5, buttonWidth, buttonHeight, new TranslatableText("option.modpack_updater.projectID"));
-		projectIDField.setText(App.GetInstance().config.GetProjectID() + "");
+		projectIDField.setText(App.GetInstance().config.getProjectID() + "");
 		projectIDField.setChangedListener(value -> {
 			if (!value.isBlank()) {
 				try {
 					int projectID = Integer.parseInt(value);
-					App.GetInstance().config.SetProjectID(projectID);
+					App.GetInstance().config.setProjectID(projectID);
 				} catch (NumberFormatException e) {
 					for (char c : value.toCharArray()) {
 						if (!Character.isDigit(c)) {
