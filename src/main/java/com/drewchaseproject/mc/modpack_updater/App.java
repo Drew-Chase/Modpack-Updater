@@ -52,7 +52,7 @@ public class App {
             @Override
             public void run() {
                 EnvironmentManager.CleanUp();
-                if (config.GetProjectID() != -1) {
+                if (config.getProjectID() != -1) {
                     EnvironmentManager.TryUpdate(EnvironmentManager.Environment.CLIENT);
                 } else
                     Log("Project ID cannot be blank!", LogType.error);

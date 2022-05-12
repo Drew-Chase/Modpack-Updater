@@ -29,7 +29,7 @@ public class CurseHandler {
         JsonObject json = CurseHandler.GetLatestPackVersionAsJson();
         if (json == null)
             return false;
-        return ModManager.GetInstance().IsEmpty() || App.GetInstance().config.GetReleaseDate() == null || ParseFileDate(json.get("fileDate").getAsString()).after(App.GetInstance().config.GetReleaseDate());
+        return ModManager.GetInstance().IsEmpty() || App.GetInstance().config.getReleaseDate() == null || ParseFileDate(json.get("fileDate").getAsString()).after(App.GetInstance().config.getReleaseDate());
     }
 
     public static Path DownloadUpdateArchive() {
@@ -99,7 +99,7 @@ public class CurseHandler {
 
     public static JsonArray GetPackAsJson() {
         try {
-            URL url = new URL(String.format("https://addons-ecs.forgesvc.net/api/v2/addon/%s/files", App.GetInstance().config.GetProjectID()));
+            URL url = new URL(String.format("https://addons-ecs.forgesvc.net/api/v2/addon/%s/files", App.GetInstance().config.getProjectID()));
             HttpConnection connection = new HttpConnection((HttpURLConnection) url.openConnection());
             if (connection.IsSuccess()) {
 
