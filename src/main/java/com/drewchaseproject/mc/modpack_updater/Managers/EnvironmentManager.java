@@ -35,7 +35,8 @@ public class EnvironmentManager {
                 if (manifest.toFile().exists()) {
                     List<Mod> newMods = CurseHandler.GetModListFromManifest(manifest);
                     for (Mod newMod : newMods) {
-                        if (!ModManager.GetInstance().GetMods().contains(newMod)) {
+                        if (!ModManager.GetInstance().Contains(newMod)) {
+                            App.GetInstance().Log(newMod.GetFileName());
                             newMod.Download();
                         }
                         for (Mod oldMods : ModManager.GetInstance().GetMods()) {
@@ -81,7 +82,7 @@ public class EnvironmentManager {
                 file.delete();
             }
             List<Mod> newMods = CurseHandler.GetModListFromManifest(Path.of(App.GetInstance().WorkingDirectory.toAbsolutePath().toString(), "temp", "output", "manifest.json"));
-            App.GetInstance().config.SetReleaseDate(CurseHandler.ParseFileDate(CurseHandler.GetLatestPackVersionAsJson().get("fileDate").getAsString()));
+            App.GetInstance().config.setReleaseDate(CurseHandler.ParseFileDate(CurseHandler.GetLatestPackVersionAsJson().get("fileDate").getAsString()));
             ModManager.GetInstance().Clear();
             for (Mod mod : newMods) {
                 ModManager.GetInstance().Add(mod);
