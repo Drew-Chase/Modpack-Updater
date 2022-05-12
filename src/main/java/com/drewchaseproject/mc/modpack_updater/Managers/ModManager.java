@@ -40,6 +40,14 @@ public class ModManager {
         return _mods;
     }
 
+    public boolean Contains(Mod mod) {
+        for (Mod m : _mods) {
+            if (m.GetProjectID() == mod.GetProjectID() || Path.of("mods/" + m.GetFileName()).toFile().exists())
+                return true;
+        }
+        return false;
+    }
+
     public List<Mod> GetModsToBeRemoved() {
         return _modsToBeRemoved;
     }
@@ -93,5 +101,4 @@ public class ModManager {
             Write();
         }
     }
-
 }
